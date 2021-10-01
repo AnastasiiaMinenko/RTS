@@ -20,7 +20,8 @@ public class SelectionUI : MonoBehaviour
         
         spawnWorkerButton.onClick.AddListener(onWorkerClick);
         
-        spawnWarriorButton.onClick.AddListener(onWarriorClick);        
+        spawnWarriorButton.onClick.AddListener(onWarriorClick);
+        
     }
     public void Init(Player player)
     {
@@ -45,9 +46,9 @@ public class SelectionUI : MonoBehaviour
         var spawnDirMine = new Vector2(horizontalMine, verticalMine);
 
         var pos = (Vector2)goCastle.Pos + spawnDirMine * -6;
+        
 
         SpawnUnit(UnitType.MINE, pos, Quaternion.identity.eulerAngles, player);
-
              
     }
     private void onBarrackClick()
@@ -63,10 +64,9 @@ public class SelectionUI : MonoBehaviour
         
         var pos = (Vector2)goCastle.Pos + spawnDirBarrack *-2;       //8
 
-        SpawnUnit(UnitType.BARRACK, pos * -1f, Quaternion.identity.eulerAngles, player);
-
-       
+        SpawnUnit(UnitType.BARRACK, pos * -1f, Quaternion.identity.eulerAngles, player);      
     }
+    
     private void onWorkerClick()
     {
         var goCastle = player.GetUnitByType(UnitType.CASTLE);
@@ -97,9 +97,9 @@ public class SelectionUI : MonoBehaviour
         var verticalWarrior = Mathf.Sin(radiansWarrior);
         var horizontalWarrior = Mathf.Cos(radiansWarrior);
 
-        var spawnDirWorker = new Vector2(horizontalWarrior, verticalWarrior);
+        var spawnDirWarrior = new Vector2(horizontalWarrior, verticalWarrior);
 
-        var pos = (Vector2)goCastle.Pos + spawnDirWorker *4;        //3?
+        var pos = (Vector2)goCastle.Pos + spawnDirWarrior * 4;        //3?
 
         SpawnUnit(UnitType.WARRIOR, pos * 0.9f, Quaternion.identity.eulerAngles, player);        
         

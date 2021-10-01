@@ -1,4 +1,5 @@
 using Commands;
+using Scripts.Core.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,16 +10,21 @@ public interface IUnit
     public Vector2 Pos { get; }
     public Quaternion Rot { get; }
     public Transform Transform { get; }
-    public void SetIsSelected(bool isSelected);
+    public void SetIsSelected(bool isSelected);    
     public void StartMove(Transform transform, Vector3 startPos, Vector3 endPos, float duration);
+    public void SetHealthBar(float health, HealthBarUI healthBarUI);
 }
 
 public class BaseUnit : MonoBehaviour, IUnit
 {
+    private float maxHealth;
+    private HealthBarUI healthBarUI;
+    private ActiveData<float> health = new ActiveData<float>();
     public UnitType Type { get; set; }
     public Vector2 Pos { get { return transform.position;} }
     public Quaternion Rot { get { return transform.rotation; } }
-    public Transform Transform { get { return transform; } }
+    public Transform Transform { get { return transform; } }    
+
     public void SetIsSelected(bool isSelected)
     {
         GetComponent<Renderer>().material.color = isSelected ? Color.grey : Color.white;
@@ -37,5 +43,22 @@ public class BaseUnit : MonoBehaviour, IUnit
     public void StartMove(Transform transform, Vector3 startPos, Vector3 endPos, float duration)
     {
         StartCoroutine(Move(transform, startPos, endPos, duration));
+    }
+    public void SetHealthBar(float health, HealthBarUI healthBarUI)
+    {
+        this.health.Value = health;
+        this.maxHealth = health;
+        this.healthBarUI = healthBarUI;
+
+        this.health.UpdateEvent += Health_UpdateEvent;
+
+        healthBarUI.SetMaxHealth(maxHealth);
+        this.health.Value = maxHealth * 0.75f;
+
+    }
+
+    private void Health_UpdateEvent(float obj)
+    {
+        healthBarUI.SetHealth(health.Value);
     }
 }

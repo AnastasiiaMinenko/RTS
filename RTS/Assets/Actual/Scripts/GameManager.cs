@@ -22,7 +22,11 @@ public class GameManager : MonoBehaviour
         CommandExecutor.Execute(new SpawnPlayerData 
         {         
             ID = "Player0"
-        });                
+        }); 
+        /*CommandExecutor.Execute(new SpawnPortalData 
+        {         
+            ID = "Player1"
+        });     */           
     }      
     
 }

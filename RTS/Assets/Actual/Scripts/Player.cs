@@ -9,7 +9,10 @@ public class Player
     private List<IUnit> units = new List<IUnit>();
     public List<IUnit> Units => units;
     public ActiveData<IUnit>  SelectedUnit = new ActiveData<IUnit>();
-    public ActiveData<int> Gold = new ActiveData<int>();    
+    public ActiveData<int> Gold = new ActiveData<int>();
+
+    public ActiveData<HealthBarUI> HealthBar = new ActiveData<HealthBarUI>();
+
 
     public void Init()
     {

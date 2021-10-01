@@ -11,6 +11,7 @@ namespace Commands
         {
             {typeof(SpawnUnitData),new SpawnUnitCommand()},
             {typeof(SpawnPlayerData),new SpawnPlayerCommand()},
+            //{typeof(SpawnPortalData),new SpawnPortalCommand()},
             {typeof(UpdateSelectionData),new UpdateSelectionCommand()},
             {typeof(UnitActionData),new UnitActionCommand()},
 

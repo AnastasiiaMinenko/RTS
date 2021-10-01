@@ -10,6 +10,7 @@ public class WorkerController : BaseUnit
     private MineController mineController;
     private int goldCapacity = 1;
     private Coroutine mineCor;
+
     public void SetCastle(CastleController castleController)
     {
         this.castleController = castleController;
@@ -20,6 +21,7 @@ public class WorkerController : BaseUnit
         this.mineController = mineController;
         TryMineStart();
     }
+
 
     private void TryMineStart()
     {
@@ -35,6 +37,8 @@ public class WorkerController : BaseUnit
             }            
         }
     }
+
+
     public IEnumerator WhileMove()
     {
         while (true)
