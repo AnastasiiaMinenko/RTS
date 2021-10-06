@@ -46,10 +46,9 @@ public class SelectionUI : MonoBehaviour
         var spawnDirMine = new Vector2(horizontalMine, verticalMine);
 
         var pos = (Vector2)goCastle.Pos + spawnDirMine * -6;
-        
 
         SpawnUnit(UnitType.MINE, pos, Quaternion.identity.eulerAngles, player);
-             
+
     }
     private void onBarrackClick()
     {
@@ -101,8 +100,9 @@ public class SelectionUI : MonoBehaviour
 
         var pos = (Vector2)goCastle.Pos + spawnDirWarrior * 4;        //3?
 
-        SpawnUnit(UnitType.WARRIOR, pos * 0.9f, Quaternion.identity.eulerAngles, player);        
-        
+        SpawnUnit(UnitType.WARRIOR, pos * 0.9f, Quaternion.identity.eulerAngles, player);
+
+
     }
     private void SpawnUnit(UnitType type, Vector2 pos, Vector3 rot, Player player)
     {   

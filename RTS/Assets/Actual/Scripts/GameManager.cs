@@ -2,6 +2,7 @@ using Commands;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,20 +14,26 @@ public class GameManager : MonoBehaviour
     
     public void Awake()
     {
+        Data.CoroutineRunner = gameObject.AddComponent<CoroutineRunner>();
         Data.GameField = gameField;   
         Data.UIController = uiController;           
     }
         
     void Start()
     {
+        CommandExecutor.Execute(new SpawnPlayerData
+        {
+            ID = "Player0",
+            IsBot = false
+        });  
         CommandExecutor.Execute(new SpawnPlayerData 
         {         
-            ID = "Player0"
-        }); 
-        /*CommandExecutor.Execute(new SpawnPortalData 
-        {         
-            ID = "Player1"
-        });     */           
+            ID = "Bot",
+            IsBot = true
+        });
+
+        Data.Players[0].Enemies.Add(Data.Players[1]);
+        Data.Players[1].Enemies.Add(Data.Players[0]);
     }      
     
 }

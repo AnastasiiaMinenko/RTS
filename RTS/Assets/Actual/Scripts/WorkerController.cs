@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WorkerController : BaseUnit
 {   
-    [SerializeField] private float speedMove;
+    private float speedMove = 0.8f;
     private int goldAmount = 0;
     private CastleController castleController;
     private MineController mineController;
@@ -46,8 +46,8 @@ public class WorkerController : BaseUnit
             if (goldAmount == 0)
             {                   
                 if(((Vector2)transform.position - mineController.Pos).magnitude <= 0.8)
-                {
-                    goldAmount = mineController.GetGold(goldCapacity);                    
+                {                    
+                    goldAmount = mineController.GetGold(goldCapacity);
                 }
                 else
                 {
@@ -59,6 +59,7 @@ public class WorkerController : BaseUnit
                 if (((Vector2)transform.position - castleController.Pos).magnitude <= 2.7)
                 {
                     castleController.ReceiveGold(goldAmount);
+                    //Debug.Log("4st: " + goldAmount);
                     goldAmount = 0;
                 }
                 else

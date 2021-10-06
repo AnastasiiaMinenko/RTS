@@ -10,11 +10,9 @@ namespace Commands
         private static Dictionary<Type, ICommand> commandDict = new Dictionary<Type, ICommand>
         {
             {typeof(SpawnUnitData),new SpawnUnitCommand()},
-            {typeof(SpawnPlayerData),new SpawnPlayerCommand()},
-            //{typeof(SpawnPortalData),new SpawnPortalCommand()},
+            {typeof(SpawnPlayerData),new SpawnPlayerCommand()},            
             {typeof(UpdateSelectionData),new UpdateSelectionCommand()},
             {typeof(UnitActionData),new UnitActionCommand()},
-
         };
 
         public static void Execute(ICommandData data, Action onComplete = null, Action<string> onFail = null)

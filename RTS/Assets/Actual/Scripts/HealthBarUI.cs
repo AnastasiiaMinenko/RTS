@@ -17,12 +17,6 @@ public class HealthBarUI : BaseUnit
     }
     public void SetHealth(float health)
     {
-        Debug.Log(health);
-        Debug.Log(maxValue);
-        Debug.Log(health / maxValue);
-        Debug.Log(fill.fillAmount);
-        Debug.Log(fill.color);
-
         fill.fillAmount = health / maxValue;
 
         fill.color = gradient.Evaluate(fill.fillAmount);

@@ -9,8 +9,8 @@ namespace Commands
 	public struct SpawnPlayerData : ICommandData
 	{		
 		public string ID;
+		public bool IsBot;
 	}
-
 	public class SpawnPlayerCommand : ICommand
 	{
 		private SpawnPlayerData data;
@@ -30,20 +30,31 @@ namespace Commands
 		{
 			var player = new Player();			
 			player.Init();
-			GameManager.Data.CurrentPlayer = player;
 			GameManager.Data.Players.Add(player);  //spawn player
-			CommandExecutor.Execute(new SpawnUnitData 
-			{ 
-				Type = UnitType.CASTLE,
-				Pos = new Vector2(-1.45f, 2.33f), 
-				Rot = new Vector3(0, 180, 0),
-				Player = player
-			});
-
-            player.Gold.UpdateEvent += Gold_UpdateEvent;
+            if (data.IsBot)
+            {
+				CommandExecutor.Execute(new SpawnUnitData
+				{
+					Type = UnitType.PORTAL,
+					Pos = new Vector2(28.2f, 2.64f),
+					Rot = new Vector3(0, 0, 0),
+					Player = player
+				});
+			}
+            else
+            {
+				GameManager.Data.CurrentPlayer = player;
+				CommandExecutor.Execute(new SpawnUnitData 
+				{ 
+					Type = UnitType.CASTLE,
+					Pos = new Vector2(-1.45f, 2.33f),					
+					Rot = new Vector3(0, 180, 0),
+					Player = player
+				});
+				player.Gold.UpdateEvent += Gold_UpdateEvent;
+			}
 		}
-
-        private void Gold_UpdateEvent(int val)
+		private void Gold_UpdateEvent(int val)
         {
 			GameManager.Data.UIController.GoldAmount.text = "Gold: " + val.ToString();
         }

@@ -13,6 +13,7 @@ namespace Commands
 		public UnitType Type;
 
 		public Player Player;
+		public PortalController PortalController;
 		public HealthBarUI valueHealth;
 
 	}
@@ -28,22 +29,22 @@ namespace Commands
 				UnitType.CASTLE, new UnitBuildData { Path = "Buildings/Castle", OffsetY = 200}
 			},
             {
-				UnitType.MINE, new UnitBuildData { Path = "Buildings/Mine", OffsetY = 100}
+				UnitType.MINE, new UnitBuildData { Path = "Buildings/Mine", OffsetY = 150}
 			},             
 			{
-				UnitType.BARRACK, new UnitBuildData { Path = "Buildings/Barrack", OffsetY = 150}
+				UnitType.BARRACK, new UnitBuildData { Path = "Buildings/Barrack", OffsetY = 180}
 			},  
 			{
 				UnitType.PORTAL, new UnitBuildData { Path = "Buildings/Portal", OffsetY = 200}
 			}, 
 			{
-				UnitType.WORKER, new UnitBuildData { Path = "Units/Worker", OffsetY = 200}
+				UnitType.WORKER, new UnitBuildData { Path = "Units/Worker", OffsetY = 60}
 			}, 
 			{
-				UnitType.WARRIOR, new UnitBuildData { Path = "Units/Warrior", OffsetY = 200}
+				UnitType.WARRIOR, new UnitBuildData { Path = "Units/Warrior", OffsetY = 60}
 			}, 
 			{
-				UnitType.ENEMY, new UnitBuildData { Path =  "Units/Enemy", OffsetY = 200}
+				UnitType.ENEMY, new UnitBuildData { Path =  "Units/Enemy", OffsetY = 60}
 			}
 		};
 
@@ -59,23 +60,27 @@ namespace Commands
 		private void Do()
 		{
 			var prefab = Resources.Load<BaseUnit>("Prefabs/" + UnitPath[data.Type].Path);			
-			var gameObject = GameObject.Instantiate(prefab, data.Pos, Quaternion.Euler(data.Rot), GameManager.Data.GameField);			
+			var gameObject = GameObject.Instantiate(prefab, data.Pos, Quaternion.Euler(data.Rot), GameManager.Data.GameField);
+			gameObject.Owner = data.Player;
 			gameObject.Type = data.Type;			
-			data.Player.Units.Add(gameObject);
-						
-			/*var prefabPort = Resources.Load<BaseUnit>("Prefabs/Buildings/Portal");			
-			var gameObjectPort = GameObject.Instantiate(prefabPort, new Vector3(28.2f, 2.64f, -0.1f), Quaternion.identity, GameManager.Data.GameField);
-			data.Player.Units.Add(gameObjectPort);	*/			
+			data.Player.Units.Add(gameObject);	
+
+
 			var prefabHP = Resources.Load<HealthBarUI>("Prefabs/UI/HealthBar");				
 			var healthBarObject = GameObject.Instantiate(prefabHP, GameManager.Data.UIController.UI);		
 			var followController = healthBarObject.gameObject.AddComponent<UIFollowController>();						
-			followController.Init(healthBarObject.GetComponent<RectTransform>(), gameObject.transform, 200,GameManager.Data.UIController.UI.rect.height);
-			
+			followController.Init(healthBarObject.GetComponent<RectTransform>(), gameObject.transform, UnitPath[data.Type].OffsetY, GameManager.Data.UIController.UI.rect.height);
+			gameObject.SetHealthBar(10, healthBarObject);
 
 			if (data.Type == UnitType.CASTLE)
             {
 				data.Player.AddCastle((CastleController)gameObject);
-			}			
+			}	
+			else if(data.Type == UnitType.PORTAL)
+            {
+				var portal = (PortalController)gameObject;
+				portal.Init();
+            }
 			else if(data.Type == UnitType.WORKER)
             {
 				var worker = (WorkerController)gameObject;
@@ -86,7 +91,14 @@ namespace Commands
                 {
 					worker.SetMine((MineController)mine);
 				}
-			}				
+			}
+		
+			else if(data.Type == UnitType.WARRIOR || data.Type == UnitType.ENEMY)
+            {
+				var war = (WarriorController)gameObject;
+				war.Init();
+			}
+			
 		}		
 	}
 
