@@ -51,6 +51,7 @@ public class Player
     {
         castle.GoldReceived.AddListener(val => {
             Gold.Value += val;
+            Debug.Log(Gold.Value);
         }); 
     }
 

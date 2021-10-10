@@ -20,8 +20,7 @@ public class SelectionUI : MonoBehaviour
         
         spawnWorkerButton.onClick.AddListener(onWorkerClick);
         
-        spawnWarriorButton.onClick.AddListener(onWarriorClick);
-        
+        spawnWarriorButton.onClick.AddListener(onWarriorClick);        
     }
     public void Init(Player player)
     {
@@ -89,7 +88,7 @@ public class SelectionUI : MonoBehaviour
     }
     private void onWarriorClick()
     {
-        var goCastle = player.GetUnitByType(UnitType.BARRACK); //castle
+        var goCastle = player.GetUnitByType(UnitType.BARRACK); 
 
         var radiansWarrior = goCastle.Rot.eulerAngles.y * Mathf.Deg2Rad;
 
@@ -98,15 +97,12 @@ public class SelectionUI : MonoBehaviour
 
         var spawnDirWarrior = new Vector2(horizontalWarrior, verticalWarrior);
 
-        var pos = (Vector2)goCastle.Pos + spawnDirWarrior * 4;        //3?
+        var pos = (Vector2)goCastle.Pos + spawnDirWarrior * 4;        
 
         SpawnUnit(UnitType.WARRIOR, pos * 0.9f, Quaternion.identity.eulerAngles, player);
-
-
     }
     private void SpawnUnit(UnitType type, Vector2 pos, Vector3 rot, Player player)
     {   
-
         CommandExecutor.Execute(new SpawnUnitData
         {
             Type = type,

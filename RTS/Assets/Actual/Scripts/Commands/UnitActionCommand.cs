@@ -30,21 +30,25 @@ namespace Commands
 
 		private void Do()
 		{
-
 			var selectedUnit = data.Player.SelectedUnit.Value;
 			if (selectedUnit != null)
 			{
 				if (data.Unit!=null)
                 {
-					if(selectedUnit is WorkerController && data.Unit is MineController)
-                    {
+					if (selectedUnit is WorkerController && data.Unit is MineController)
+					{
 						((WorkerController)selectedUnit).SetMine((MineController)data.Unit);
-                    }
+					}
+
+					else if (selectedUnit is WarriorController && data.Unit is IUnit && selectedUnit.Owner.Enemies.Contains(data.Unit.Owner)) 
+                    {						
+						((WarriorController)selectedUnit).SetEnemy(data.Unit);												
+					}
                 }
                 else 
-                {
+                {					
 					if(selectedUnit is WorkerController)
-                    {
+                    {						
 						((WorkerController)selectedUnit).SetMine(null);
 					}
 					var dir = ((Vector2)selectedUnit.Transform.position - data.Pos).magnitude;

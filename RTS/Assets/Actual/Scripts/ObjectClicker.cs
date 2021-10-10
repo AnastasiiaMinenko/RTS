@@ -8,8 +8,6 @@ public class ObjectClicker : MonoBehaviour
 {
     private void Update()
     {
-        
-
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -31,7 +29,7 @@ public class ObjectClicker : MonoBehaviour
             var pos = Vector2.zero;
 
             if (hit)
-            {
+            {                
                 baseUnit = (IUnit)hit.transform.GetComponent<BaseUnit>();
                 pos = hit.point;
             }

@@ -9,32 +9,19 @@ public class WarriorController : BaseUnit
     private bool isMoving;
     private bool isAttacking;
 
-
     private IUnit enemy;
     public void Init()
     {
-              
         
         StartCoroutine(MoveAndAttack());
     }
     
-    
-    /*private void TryFightStart()
+    public void SetEnemy(IUnit enemy)
     {
-        if (Owner.Enemies != null && Owner.Units != null)
-        {
-            Debug.Log("Owner.Enemies != null && Owner.Units != null");
-            fightCor = StartCoroutine(MoveAndAttack());
-        }
-        else
-        {
-            Debug.Log("Owner.Enemies = null && Owner.Units = null");
-            if (fightCor != null)
-            {
-                StopCoroutine(fightCor);
-            }
-        }
-    }*/
+        this.enemy = enemy;
+
+    }
+   
 
 
     public IEnumerator MoveAndAttack()
@@ -42,8 +29,7 @@ public class WarriorController : BaseUnit
         while (true)
         {
             if(enemy == null&& Owner.Enemies.Count>0&& Owner.Enemies[0].Units.Count>0)
-            {
-                
+            {               
                 var arr = Owner.Enemies[0].Units;
                 var minDist = float.MaxValue;
                 for(var i = 0; i<arr.Count; i++)
@@ -68,18 +54,13 @@ public class WarriorController : BaseUnit
                 {
                     enemy.ReceiveDamage(0.5f);
                     yield return new WaitForSeconds(1f);
-                }
-                
-            }
-            
-
-                
-            
+                }                
+            }            
             yield return null;
         }
     }
     private void MoveTo(Vector2 target)
-    {
+    {        
         transform.position = Vector3.MoveTowards(transform.position, target, speedMove * Time.deltaTime);
     }
 }
