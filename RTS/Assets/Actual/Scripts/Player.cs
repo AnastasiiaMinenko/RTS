@@ -11,9 +11,8 @@ public class Player
     public ActiveData<IUnit>  SelectedUnit = new ActiveData<IUnit>();
     public ActiveData<int> Gold = new ActiveData<int>();
     public List<Player> Enemies = new List<Player>();
-    public ActiveData<HealthBarUI> HealthBar = new ActiveData<HealthBarUI>();
-
-
+    
+    
     public void Init()
     {
         SelectedUnit.UpdateEvent += SelectedUnitUpdated;
@@ -50,9 +49,7 @@ public class Player
     public void AddCastle(CastleController castle)
     {
         castle.GoldReceived.AddListener(val => {
-            Gold.Value += val;
-            Debug.Log(Gold.Value);
+            Gold.Value += val;            
         }); 
     }
-
 }

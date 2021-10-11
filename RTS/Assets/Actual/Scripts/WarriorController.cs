@@ -5,25 +5,16 @@ using UnityEngine;
 public class WarriorController : BaseUnit
 {
     private float speedMove = 1f;
-    private Coroutine fightCor;
-    private bool isMoving;
-    private bool isAttacking;
 
     private IUnit enemy;
     public void Init()
-    {
-        
+    {        
         StartCoroutine(MoveAndAttack());
-    }
-    
+    }    
     public void SetEnemy(IUnit enemy)
     {
         this.enemy = enemy;
-
     }
-   
-
-
     public IEnumerator MoveAndAttack()
     {
         while (true)
@@ -52,6 +43,7 @@ public class WarriorController : BaseUnit
                 }
                 else
                 {
+
                     enemy.ReceiveDamage(0.5f);
                     yield return new WaitForSeconds(1f);
                 }                

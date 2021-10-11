@@ -6,6 +6,7 @@ using UnityEngine;
 
 public interface IUnit
 {
+    public bool IsAlive { get; set; }
     public UnitType Type { get; set; }
     public Vector2 Pos { get; }
     public Quaternion Rot { get; }
@@ -15,13 +16,15 @@ public interface IUnit
     public void StartMove(Transform transform, Vector3 startPos, Vector3 endPos, float duration);
     public void SetHealthBar(float health, HealthBarUI healthBarUI);
     public void ReceiveDamage(float damage);
+
 }
 
 public class BaseUnit : MonoBehaviour, IUnit
-{
+{    
     private float maxHealth;
     private HealthBarUI healthBarUI;
     private ActiveData<float> health = new ActiveData<float>();
+    public bool IsAlive { get; set; }
     public UnitType Type { get; set; }    
     public Vector2 Pos { get { return transform.position;} }
     public Quaternion Rot { get { return transform.rotation; } }

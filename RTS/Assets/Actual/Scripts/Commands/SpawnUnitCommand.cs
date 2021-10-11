@@ -10,7 +10,7 @@ namespace Commands
 	{
 		public Vector2 Pos;
 		public Vector3 Rot;
-		public UnitType Type;
+		public UnitType Type;		
 
 		public Player Player;
 		public PortalController PortalController;
@@ -74,7 +74,10 @@ namespace Commands
 
 			if (data.Type == UnitType.CASTLE)
             {
-				data.Player.AddCastle((CastleController)gameObject);
+				var castle = (CastleController)gameObject; 
+				data.Player.AddCastle(castle);
+				castle.Init();
+
 			}	
 			else if(data.Type == UnitType.PORTAL)
             {
@@ -91,14 +94,12 @@ namespace Commands
                 {
 					worker.SetMine((MineController)mine);
 				}
-			}
-		
+			}		
 			else if(data.Type == UnitType.WARRIOR || data.Type == UnitType.ENEMY)
             {
 				var war = (WarriorController)gameObject;
 				war.Init();
-			}
-			
+			}			
 		}		
 	}
 
