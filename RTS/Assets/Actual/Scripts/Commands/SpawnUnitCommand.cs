@@ -10,9 +10,11 @@ namespace Commands
 	{
 		public Vector2 Pos;
 		public Vector3 Rot;
-		public UnitType Type;
+		public UnitType Type;		
 
 		public Player Player;
+		public PortalController PortalController;
+		public HealthBarUI valueHealth;
 	}
 
 	public class SpawnUnitCommand : ICommand
@@ -20,29 +22,29 @@ namespace Commands
 		private SpawnUnitData data;
 		private Action onSuccess;
 		private Action<string> onFail;
-		private static Dictionary<UnitType, string> UnitPath = new Dictionary<UnitType, string>
+		private static Dictionary<UnitType, UnitBuildData> UnitPath = new Dictionary<UnitType, UnitBuildData>
 		{
 			{
-				UnitType.CASTLE, "Buildings/Castle"				
+				UnitType.CASTLE, new UnitBuildData { Path = "Buildings/Castle", OffsetY = 200, Health = 30}
 			},
             {
-				UnitType.MINE, "Buildings/Mine"
-            }, 
+				UnitType.MINE, new UnitBuildData { Path = "Buildings/Mine", OffsetY = 150, Health = 20}
+			},             
 			{
-				UnitType.BARRACK, "Buildings/Barrack"
-            },  
+				UnitType.BARRACK, new UnitBuildData { Path = "Buildings/Barrack", OffsetY = 180, Health = 20}
+			},  
 			{
-				UnitType.PORTAL, "Buildings/EnemyPortal"
-            }, 
+				UnitType.PORTAL, new UnitBuildData { Path = "Buildings/Portal", OffsetY = 200, Health = 30}
+			}, 
 			{
-				UnitType.WORKER, "Units/Worker"
-            }, 
+				UnitType.WORKER, new UnitBuildData { Path = "Units/Worker", OffsetY = 60, Health = 20}
+			}, 
 			{
-				UnitType.WARRIOR, "Units/Warrior"
-            }, 
+				UnitType.WARRIOR, new UnitBuildData { Path = "Units/Warrior1", OffsetY = 60, Health = 10}
+			}, 
 			{
-				UnitType.ENEMY, "Units/Enemy"
-            }
+				UnitType.ENEMY, new UnitBuildData { Path =  "Units/Enemy", OffsetY = 60, Health = 10}
+			}
 		};
 
 		public void Execute(ICommandData data, Action onSuccess, Action<string> onFail)
@@ -56,19 +58,31 @@ namespace Commands
 
 		private void Do()
 		{
-			//Debug.Log(UnitPath[data.Type]);
-			var prefab = Resources.Load<BaseUnit>("Prefabs/" + UnitPath[data.Type]);
-			//Debug.Log(prefabCastle);
+			var prefab = Resources.Load<BaseUnit>("Prefabs/" + UnitPath[data.Type].Path);			
 			var gameObject = GameObject.Instantiate(prefab, data.Pos, Quaternion.Euler(data.Rot), GameManager.Data.GameField);
+			gameObject.Owner = data.Player;
+			gameObject.Type = data.Type;			
+			data.Player.Units.Add(gameObject);	
 
-			gameObject.Type = data.Type;
-			
-			data.Player.Units.Add(gameObject);
 
-			if(data.Type == UnitType.CASTLE)
+			var prefabHP = Resources.Load<HealthBarUI>("Prefabs/UI/HealthBar");				
+			var healthBarObject = GameObject.Instantiate(prefabHP, GameManager.Data.UIController.UI);		
+			var followController = healthBarObject.gameObject.AddComponent<UIFollowController>();						
+			followController.Init(healthBarObject.GetComponent<RectTransform>(), gameObject.transform, UnitPath[data.Type].OffsetY, GameManager.Data.UIController.UI.rect.height);
+			gameObject.SetHealthBar(UnitPath[data.Type].Health, healthBarObject);
+
+			if (data.Type == UnitType.CASTLE)
             {
-				data.Player.AddCastle((CastleController)gameObject);
-			}
+				var castle = (CastleController)gameObject; 
+				data.Player.AddCastle(castle);
+				castle.Init();
+
+			}	
+			else if(data.Type == UnitType.PORTAL)
+            {
+				var portal = (PortalController)gameObject;
+				portal.Init();
+            }
 			else if(data.Type == UnitType.WORKER)
             {
 				var worker = (WorkerController)gameObject;
@@ -79,7 +93,12 @@ namespace Commands
                 {
 					worker.SetMine((MineController)mine);
 				}
-			}					
+			}		
+			else if(data.Type == UnitType.WARRIOR || data.Type == UnitType.ENEMY)
+            {
+				var war = (WarriorController)gameObject;
+				war.Init();
+			}			
 		}		
 	}
 
@@ -92,5 +111,12 @@ namespace Commands
 		WORKER,
 		WARRIOR,
 		ENEMY,
+	}
+
+	public struct UnitBuildData
+    {
+		public string Path;
+		public float OffsetY;
+		public float Health;
 	}
 }

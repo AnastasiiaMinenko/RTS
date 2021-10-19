@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 1365887621513557681}
   - component: {fileID: 250922227288773648}
   - component: {fileID: 5017725751311622680}
-  - component: {fileID: 2246272940406645725}
   - component: {fileID: 4421018133779974742}
-  - component: {fileID: -4348228074044930403}
+  - component: {fileID: 931651568119034476}
   m_Layer: 8
   m_Name: Warrior
   m_TagString: Untagged
@@ -96,33 +95,12 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.19516954, y: -0.5046431}
   m_Size: {x: 0.68034726, y: 1.0508878}
   m_Direction: 0
---- !u!50 &2246272940406645725
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3370901387201225579}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &4421018133779974742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,18 +113,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2595f87db203cf946980d7a6c7fb7065, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-4348228074044930403
-MonoBehaviour:
+--- !u!95 &931651568119034476
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3370901387201225579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d28a4287fd25e294eac221e1e284f8b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  white: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  grey: {fileID: 2100000, guid: 981825c315d03c144bec89accf2bb52f, type: 2}
-  currSelected: 0
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

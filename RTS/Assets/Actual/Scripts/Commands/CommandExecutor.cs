@@ -11,21 +11,19 @@ namespace Commands
         {
             {typeof(SpawnUnitData),new SpawnUnitCommand()},
             {typeof(SpawnPlayerData),new SpawnPlayerCommand()},
+            {typeof(DestroyUnitData),new DestroyUnitCommand()},
+            {typeof(HitUnitData),new HitUnitCommand()},
             {typeof(UpdateSelectionData),new UpdateSelectionCommand()},
             {typeof(UnitActionData),new UnitActionCommand()},
-
         };
 
         public static void Execute(ICommandData data, Action onComplete = null, Action<string> onFail = null)
-        {
-            //Debug.Log(data.GetType());
+        {            
             commandDict[data.GetType()].Execute(data, onComplete, onFail);
 
             //(new SpawnUnitCommand()).Execute(new SpawnUnitData(), onComplete, onFail);
         }
-
     }
-
     public interface ICommandData
     {
 
