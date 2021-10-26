@@ -30,7 +30,7 @@ namespace Commands
 			data.Unit.IsAlive.Value = false;
 			
 			data.Unit.DestroyUnit();
-			data.Unit.Owner.Units.Remove(data.Unit);
+			data.Unit.Owner.Units.Remove(data.Unit);	
 
 			GameObject.Destroy(data.Unit.Transform.gameObject, 1f);
 			

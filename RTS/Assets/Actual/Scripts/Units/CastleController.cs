@@ -18,7 +18,7 @@ public class CastleController : BaseUnit
         {
             yield return delay;
             ReceiveGold(5);
-        }
+        }        
     }
     public void ReceiveGold(int value)
     {

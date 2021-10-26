@@ -10,13 +10,14 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private UIController uiController;
 
-    public static GameData Data = new GameData();
-    
+    public static GameData Data = new GameData();    
+
     public void Awake()
     {
         Data.CoroutineRunner = gameObject.AddComponent<CoroutineRunner>();
         Data.GameField = gameField;   
-        Data.UIController = uiController;           
+        Data.UIController = uiController;
+        Data.LevelManager = new LevelManager();
     }
         
     void Start()

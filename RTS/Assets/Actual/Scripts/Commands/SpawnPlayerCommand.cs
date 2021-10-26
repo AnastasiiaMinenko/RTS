@@ -51,7 +51,7 @@ namespace Commands
 					Pos = new Vector2(-1.45f, 2.33f),					
 					Rot = new Vector3(0, 180, 0),
 					Player = player
-				});
+				});		
 				player.Gold.UpdateEvent += Gold_UpdateEvent;
 				player.Gold.Value = 500;
 			}

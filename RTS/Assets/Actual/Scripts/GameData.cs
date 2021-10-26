@@ -2,6 +2,7 @@ using Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Common.Tools.Data;
 
 public class GameData 
 {
@@ -11,7 +12,9 @@ public class GameData
 
     public Player CurrentPlayer;
 
-    public List<Player> Players = new List<Player>();
+    public ActiveListData<Player> Players = new ActiveListData<Player>();
 
     public UIController UIController;
+
+    public LevelManager LevelManager;
 }

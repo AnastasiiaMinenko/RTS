@@ -37,13 +37,13 @@ namespace Commands
 				UnitType.PORTAL, new UnitBuildData { Path = "Buildings/Portal", OffsetY = 200, Health = 30}
 			}, 
 			{
-				UnitType.WORKER, new UnitBuildData { Path = "Units/Worker", OffsetY = 60, Health = 20}
+				UnitType.WORKER, new UnitBuildData { Path = "Units/Worker1", OffsetY = 60, Health = 20}
 			}, 
 			{
 				UnitType.WARRIOR, new UnitBuildData { Path = "Units/Warrior1", OffsetY = 60, Health = 10}
 			}, 
 			{
-				UnitType.ENEMY, new UnitBuildData { Path =  "Units/Enemy", OffsetY = 60, Health = 10}
+				UnitType.ENEMY, new UnitBuildData { Path =  "Units/Enemy1", OffsetY = 60, Health = 10}
 			}
 		};
 

@@ -1,4 +1,5 @@
 using Commands;
+using Common.Tools.Data;
 using Scripts.Core.Data;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,11 +7,11 @@ using UnityEngine;
 
 public class Player 
 {    
-    private List<IUnit> units = new List<IUnit>();
-    public List<IUnit> Units => units;
+    private ActiveListData<IUnit> units = new ActiveListData<IUnit>();
+    public ActiveListData<IUnit> Units => units;
     public ActiveData<IUnit>  SelectedUnit = new ActiveData<IUnit>();
     public ActiveData<int> Gold = new ActiveData<int>();
-    public List<Player> Enemies = new List<Player>();
+    public ActiveListData<Player> Enemies = new ActiveListData<Player>();
     public string ID;
     
     public void Init()

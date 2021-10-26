@@ -9,6 +9,8 @@ public class WorkerController : BaseUnit
     private CastleController castleController;
     private MineController mineController;
     private int goldCapacity = 1;
+
+    private Animator anim;    
     public void SetCastle(CastleController castleController)
     {
         this.castleController = castleController;
@@ -21,6 +23,7 @@ public class WorkerController : BaseUnit
     }
     private void TryMineStart()
     {
+        anim = GetComponentInChildren<Animator>();
         if (mineController != null && castleController != null)
         {
             GameManager.Data.CoroutineRunner.StopCor(beh);
@@ -39,22 +42,26 @@ public class WorkerController : BaseUnit
             {
                 if (((Vector2)transform.position - mineController.Pos).magnitude <= 0.8)
                 {
+                    //anim.SetBool("isMining", true);
+                    //yield return new WaitForSeconds(1f);
                     goldAmount = mineController.GetGold(goldCapacity);
                 }
                 else
                 {
+                    //anim.SetBool("isMining", false);
                     MoveTo(mineController.Pos);
                 }
             }
             else
             {
                 if (((Vector2)transform.position - castleController.Pos).magnitude <= 2.7)
-                {
+                {                    
                     castleController.ReceiveGold(goldAmount);                    
                     goldAmount = 0;
                 }
                 else
                 {
+                    //anim.SetBool("isMining", false);
                     MoveTo(castleController.Pos);
                 }
             }
@@ -62,8 +69,17 @@ public class WorkerController : BaseUnit
         }
     }
     private void MoveTo(Vector2 target)
+    {        
+        transform.position = Vector3.MoveTowards(transform.position, target, speedMove * Time.deltaTime);       
+    }
+    public override void DestroyUnit()
     {
-        transform.position = Vector3.MoveTowards(transform.position, target, speedMove * Time.deltaTime);
+        base.DestroyUnit();
+
+        castleController = null;
+        mineController = null;
+
+        GameManager.Data.CoroutineRunner.StopCor(beh);
     }
 }
 

@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Commands;
+using UnityEngine.SceneManagement;
 
 public class WarriorController : BaseUnit
 {
     private float speedMove = 10f;
     private float damage = 3f;
     private IUnit enemy;
-    private Coroutine behWar;
+
+    private Animator anim1;
     public void Init()
-    {        
+    {
+        anim1 = GetComponentInChildren<Animator>();
         SetEnemy(ReceiveEnemy(Owner, Pos));
     }
     public void SetEnemy(IUnit enemy)
@@ -24,8 +27,8 @@ public class WarriorController : BaseUnit
 
         if (enemy != null)
         {
-            GameManager.Data.CoroutineRunner.StopCor(behWar);
-            behWar = GameManager.Data.CoroutineRunner.StartCor(MoveAndAttack());
+            GameManager.Data.CoroutineRunner.StopCor(beh);
+            beh = GameManager.Data.CoroutineRunner.StartCor(MoveAndAttack());
             enemy.IsAlive.UpdateEvent += IsAlive_UpdateEvent;
         }
     }
@@ -37,32 +40,22 @@ public class WarriorController : BaseUnit
 
     private IEnumerator MoveAndAttack()
     {
-        var IDi = Random.value * 10;
-
-        Debug.Log(IDi);
-        
         while (true)
         {
-            
-            //Debug.Log(Owner.ID + "  " + Type + "  " + IsAlive.Value);
-            /*if (enemy != null)
-            {
-                Debug.Log(enemy.Pos);
-                
-            }
-            Debug.Log(Pos);*/
             if (enemy == null)
             {
                 SetEnemy(ReceiveEnemy(Owner, Pos));
             }
 
             if (enemy != null)
-            {
-                
+            {                
                 if ((Pos - enemy.Pos).magnitude > 1)
-                {
-                    MoveTo(enemy.Pos);          
-
+                {           
+                    if(Type==UnitType.WARRIOR)
+                    {
+                        anim1.SetBool("isFight", true);
+                    }                    
+                    MoveTo(enemy.Pos);
                 }
                 else
                 {
@@ -71,8 +64,6 @@ public class WarriorController : BaseUnit
                         Enemy = enemy,
                         Damage = damage
                     });
-
-
                     yield return new WaitForSeconds(1f);
                 }
             }
@@ -93,12 +84,12 @@ public class WarriorController : BaseUnit
             var minDist = float.MaxValue;
 
             for (var i = 0; i < arr.Count; i++)
-            {
+            {                
                 if (arr[i].IsAlive.Value)
-                {
+                {                    
                     var dist = (pos - arr[i].Pos).sqrMagnitude;
                     if (dist < minDist)
-                    {
+                    {                        
                         minDist = dist;
                         unit = arr[i];
 
@@ -106,16 +97,12 @@ public class WarriorController : BaseUnit
                 }
             }
         }
+        
         return unit;
     }
     public override void DestroyUnit()
-    {
-        if (Type == UnitType.WARRIOR)
-        {
-            Debug.Break();
-        }
+    {        
         base.DestroyUnit();
-        GameManager.Data.CoroutineRunner.StopCor(behWar);
-        
+        GameManager.Data.CoroutineRunner.StopCor(beh);        
     }
 }
