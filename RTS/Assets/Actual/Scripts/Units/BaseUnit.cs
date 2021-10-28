@@ -1,14 +1,18 @@
 using Commands;
 using Scripts.Core.Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseUnit : MonoBehaviour, IUnit
 {
+    
     private float maxHealth;
     private HealthBarUI healthBarUI;
-
+    private float moveSpeed = 0.8f;
+    public float MoveSpeed => moveSpeed;
+    private Animator anim;    
     private ActiveData<float> health = new ActiveData<float>();
     public float Health => health.Value;
     private ActiveData<bool> isAlive = new ActiveData<bool>(true);
@@ -19,7 +23,30 @@ public class BaseUnit : MonoBehaviour, IUnit
     public Transform Transform { get { return transform; } }
     public Player Owner { get; set; }
     protected Coroutine beh;
-    public void SetIsSelected(bool isSelected)
+
+    private static Dictionary<Type, IBeh> behDict = new Dictionary<Type, IBeh>
+    {
+        {typeof(MiningBehData),new MiningBeh()},
+        {typeof(MoveBehData),new MoveBeh()},
+        {typeof(NoneBehData),new NoneBeh()}
+        
+    };
+    private IBeh currentBeh;
+    public void SetBeh(IBehData data)
+    {
+        currentBeh?.Stop();
+        currentBeh = behDict[data.GetType()];
+        currentBeh.Start(data);
+    }
+    public void Init()
+    {
+        anim = GetComponentInChildren<Animator>();
+    }
+    public void SetAnimBool(string name, bool isVal)
+    {
+        anim.SetBool(name, isVal);
+    }
+    public virtual void SetIsSelected(bool isSelected)
     {
         var renderers = GetComponentsInChildren<Renderer>();
         foreach(var item in renderers)
@@ -27,13 +54,11 @@ public class BaseUnit : MonoBehaviour, IUnit
            item.material.color = isSelected ? Color.grey : Color.white;
         }        
     }
-
     public void StartMove(Transform transform, Vector3 startPos, Vector3 endPos, float duration)
     {
         GameManager.Data.CoroutineRunner.StopCor(beh);
         beh = GameManager.Data.CoroutineRunner.StartCor(CoroutineRunnerExt.Move(transform, startPos, endPos, duration));
     }
-
     public void SetHealthBar(float health, HealthBarUI healthBarUI)
     {
         this.health.Value = health;
@@ -54,7 +79,9 @@ public class BaseUnit : MonoBehaviour, IUnit
     }
     public virtual void DestroyUnit()
     {
+        GameManager.Data.CoroutineRunner.StopCor(beh);
         health.UpdateEvent -= Health_UpdateEvent;
         GameObject.Destroy(healthBarUI.gameObject);
+
     }
 }

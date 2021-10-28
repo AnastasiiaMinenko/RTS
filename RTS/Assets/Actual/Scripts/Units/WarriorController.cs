@@ -5,8 +5,7 @@ using Commands;
 using UnityEngine.SceneManagement;
 
 public class WarriorController : BaseUnit
-{
-    private float speedMove = 10f;
+{    
     private float damage = 3f;
     private IUnit enemy;
 
@@ -72,7 +71,7 @@ public class WarriorController : BaseUnit
     }
     private void MoveTo(Vector2 target)
     {
-        transform.position = Vector3.MoveTowards(transform.position, target, speedMove * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, target, MoveSpeed * Time.deltaTime);
     }
 
     private static IUnit ReceiveEnemy(Player player, Vector2 pos)
@@ -99,10 +98,5 @@ public class WarriorController : BaseUnit
         }
         
         return unit;
-    }
-    public override void DestroyUnit()
-    {        
-        base.DestroyUnit();
-        GameManager.Data.CoroutineRunner.StopCor(beh);        
-    }
+    }    
 }

@@ -9,6 +9,8 @@ public interface IUnit
     public float Health { get; }
     public ActiveData<bool> IsAlive { get; }
     public UnitType Type { get; set; }
+    public float MoveSpeed { get; }
+    public void SetAnimBool(string name, bool isVal);
     public Vector2 Pos { get; }
     public Quaternion Rot { get; }
     public Transform Transform { get; }

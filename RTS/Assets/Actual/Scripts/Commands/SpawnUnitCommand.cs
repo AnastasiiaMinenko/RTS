@@ -61,7 +61,8 @@ namespace Commands
 			var prefab = Resources.Load<BaseUnit>("Prefabs/" + UnitPath[data.Type].Path);			
 			var gameObject = GameObject.Instantiate(prefab, data.Pos, Quaternion.Euler(data.Rot), GameManager.Data.GameField);
 			gameObject.Owner = data.Player;
-			gameObject.Type = data.Type;			
+			gameObject.Type = data.Type;
+			gameObject.Init();
 			data.Player.Units.Add(gameObject);	
 
 

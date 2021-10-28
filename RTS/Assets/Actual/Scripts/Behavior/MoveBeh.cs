@@ -27,7 +27,7 @@ public class MoveBeh : IBeh
     }
 
 }
-public class MoveBehData : IBehData
+public struct MoveBehData : IBehData
 {
 
 }

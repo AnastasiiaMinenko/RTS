@@ -13,7 +13,8 @@ public class Player
     public ActiveData<int> Gold = new ActiveData<int>();
     public ActiveListData<Player> Enemies = new ActiveListData<Player>();
     public string ID;
-    
+
+   
     public void Init()
     {
         SelectedUnit.UpdateEvent += SelectedUnitUpdated;
@@ -36,15 +37,17 @@ public class Player
         if (obj != null && obj.Type == Commands.UnitType.CASTLE) 
         {
             //buildingCreatingUI.SetActive(true);
+            
+            
             GameManager.Data.UIController.SelectionUI.gameObject.SetActive(true);
             GameManager.Data.UIController.SelectionUI.Init(this);
-            Time.timeScale = 0f;
+            //Time.timeScale = 0f;
         }
         else
         {
             //buildingCreatingUI.SetActive(false);
             GameManager.Data.UIController.SelectionUI.gameObject.SetActive(false);
-            Time.timeScale = 1f;
+            //Time.timeScale = 1f;
         }
     }
     public void AddCastle(CastleController castle)

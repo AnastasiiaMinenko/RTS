@@ -7,9 +7,11 @@ public class CastleController : BaseUnit
 {   
     public IntEvent GoldReceived = new IntEvent();
 
+    private Animator animCastleClick;
     public void Init()
-    {
-        GameManager.Data.CoroutineRunner.StartCor(AddGold());
+    {        
+        beh = GameManager.Data.CoroutineRunner.StartCor(AddGold());
+        animCastleClick = GetComponentInChildren<Animator>();
     }
     private IEnumerator AddGold()
     {
@@ -23,5 +25,11 @@ public class CastleController : BaseUnit
     public void ReceiveGold(int value)
     {
         GoldReceived.Invoke(value);
+    }
+    public override void SetIsSelected(bool isSelected)
+    {
+        base.SetIsSelected(isSelected);
+
+        animCastleClick.SetBool("isClick", isSelected);        
     }
 }
