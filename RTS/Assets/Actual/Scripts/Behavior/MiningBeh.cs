@@ -20,7 +20,7 @@ public class MiningBeh : IBeh
     public void Stop()
     {
         if (isStarted)
-        {            
+        {
             isStarted = false;
             GameManager.Data.CoroutineRunner.StopCor(beh);
         }
@@ -30,7 +30,6 @@ public class MiningBeh : IBeh
         //TODO FIXITPLS
         int goldAmount = 0;
         int goldCapacity = 1;
-
 
         var unitTransform = unit.Transform;
         while (true)

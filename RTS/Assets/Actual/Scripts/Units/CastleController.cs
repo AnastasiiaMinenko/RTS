@@ -6,12 +6,12 @@ using UnityEngine.Events;
 public class CastleController : BaseUnit
 {   
     public IntEvent GoldReceived = new IntEvent();
+        
+    public override void Init()
+    {
+        base.Init();
 
-    private Animator animCastleClick;
-    public void Init()
-    {        
-        beh = GameManager.Data.CoroutineRunner.StartCor(AddGold());
-        animCastleClick = GetComponentInChildren<Animator>();
+        beh = GameManager.Data.CoroutineRunner.StartCor(AddGold());        
     }
     private IEnumerator AddGold()
     {
@@ -30,6 +30,6 @@ public class CastleController : BaseUnit
     {
         base.SetIsSelected(isSelected);
 
-        animCastleClick.SetBool("isClick", isSelected);        
+        SetAnimBool("isClick", isSelected);        
     }
 }

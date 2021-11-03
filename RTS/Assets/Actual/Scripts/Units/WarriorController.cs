@@ -8,11 +8,11 @@ public class WarriorController : BaseUnit
 {    
     private float damage = 3f;
     private IUnit enemy;
-
-    private Animator anim1;
-    public void Init()
+        
+    public override void Init()
     {
-        anim1 = GetComponentInChildren<Animator>();
+        base.Init();
+
         SetEnemy(ReceiveEnemy(Owner, Pos));
     }
     public void SetEnemy(IUnit enemy)
@@ -52,7 +52,7 @@ public class WarriorController : BaseUnit
                 {           
                     if(Type==UnitType.WARRIOR)
                     {
-                        anim1.SetBool("isFight", true);
+                        SetAnimBool("isFight", true);
                     }                    
                     MoveTo(enemy.Pos);
                 }

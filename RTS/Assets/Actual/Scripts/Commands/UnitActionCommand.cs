@@ -11,6 +11,7 @@ namespace Commands
 		public Player Player;
 		public IUnit Unit;
 		public Vector2 Pos;
+		public BaseUnit BaseUnit;
 	}
 
 	public class UnitActionCommand : ICommand
@@ -49,7 +50,7 @@ namespace Commands
 					var dir = ((Vector2)selectedUnit.Transform.position - data.Pos).magnitude;
 					if (selectedUnit is WorkerController || selectedUnit is WarriorController)
 					{
-						selectedUnit.StartMove(selectedUnit.Transform, selectedUnit.Transform.position, (Vector3)data.Pos, dir);
+						data.BaseUnit.SetBeh(new MoveBehData { transform = selectedUnit.Transform, startPos = selectedUnit.Transform.position, endPos = (Vector3)data.Pos, duration = dir });
 					}
 				}
 			}

@@ -7,6 +7,7 @@ public class WorkerController : BaseUnit
     private CastleController _castleController;
     private MineController mineController;    
      
+
     public void SetCastle(CastleController castleController)
     {
         if (_castleController)
@@ -18,8 +19,7 @@ public class WorkerController : BaseUnit
         if (_castleController)
         {
             _castleController.IsAlive.UpdateEvent += IsAlive_UpdateEvent;
-        }
-           
+        }           
         TryMineStart();
     }
 
@@ -34,8 +34,7 @@ public class WorkerController : BaseUnit
         TryMineStart();        
     }
     private void TryMineStart()
-    {
-        
+    {        
         if (mineController != null && _castleController != null)
         {
             SetBeh(new MiningBehData { Unit = this, CastleController = _castleController, MineController = mineController });

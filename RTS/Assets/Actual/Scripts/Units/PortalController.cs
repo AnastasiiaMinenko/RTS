@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class PortalController : BaseUnit
 {    
-    public void Init()
-    {        
+    public override void Init()
+    {
+        base.Init();
+
         StartCoroutine(SpawnEnemy());
     }
     public IEnumerator SpawnEnemy()
