@@ -21,12 +21,13 @@ public class GameManager : MonoBehaviour
     }
         
     void Start()
-    {
+    {        
         CommandExecutor.Execute(new SpawnPlayerData
         {
             ID = "Player0",
             IsBot = false
         });  
+
         CommandExecutor.Execute(new SpawnPlayerData 
         {         
             ID = "Bot",
@@ -35,6 +36,18 @@ public class GameManager : MonoBehaviour
 
         Data.Players[0].Enemies.Add(Data.Players[1]);
         Data.Players[1].Enemies.Add(Data.Players[0]);
-    }      
-    
+
+        Data.Players[0].Units.UpdateEvent += Player1_UpdateEvent;
+        Player1_UpdateEvent(Data.Players[0].Units.Value);
+        Data.Players[1].Units.UpdateEvent += Player2_UpdateEvent;
+        Player2_UpdateEvent(Data.Players[1].Units.Value);
+    }
+    private void Player1_UpdateEvent(List<IUnit> obj)
+    {
+        GameManager.Data.UIController.PlayerAmount.text = "Player: " + obj.Count.ToString();
+    }
+    private void Player2_UpdateEvent(List<IUnit> obj)
+    {
+        GameManager.Data.UIController.EnemyAmount.text = "Enemy: " + obj.Count.ToString();
+    }
 }

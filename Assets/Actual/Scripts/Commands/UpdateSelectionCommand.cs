@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Tools.Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,18 +29,34 @@ namespace Commands
 		}
 
 		private void Do()
-		{
-
-			if (data.Player.SelectedUnit.Value != null)
+		{			
+			var selectedUnits = data.Player.SelectedUnit;
+			var targetUnit = data.Unit;
+			if (targetUnit == null) 
+            {				
+				ClearSelection(selectedUnits);
+            }
+            else
+            {				
+				if(selectedUnits.Contains(targetUnit))
+                {					
+					targetUnit.SetIsSelected(false);
+					selectedUnits.Remove(targetUnit);
+				}
+                else
+                {
+					targetUnit.SetIsSelected(true);
+					selectedUnits.Add(targetUnit);
+                }				
+            }			
+		}   
+		private void ClearSelection(ActiveListData<IUnit> selectedUnits)
+        {			
+			for (var i = 0; i < selectedUnits.Count; i++)
 			{
-				data.Player.SelectedUnit.Value.SetIsSelected(false);
+				selectedUnits[i].SetIsSelected(false);
 			}
-
-			data.Player.SelectedUnit.Value = data.Unit;
-
-			
-
-			data.Unit?.SetIsSelected(true);
-		}       
+			selectedUnits.Clear();
+		}
     }
 }

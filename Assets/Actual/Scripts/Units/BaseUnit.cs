@@ -11,17 +11,21 @@ public class BaseUnit : MonoBehaviour, IUnit
     public string ID => id;
     private float maxHealth;
     private HealthBarUI healthBarUI;
-    private float moveSpeed = 2.8f;
-    public float MoveSpeed => moveSpeed;
+    public float MoveSpeed { get; set; }
     private Animator anim;
     private ActiveData<float> health = new ActiveData<float>();
     public float Health => health.Value;
     private ActiveData<bool> isAlive = new ActiveData<bool>(true);
     public ActiveData<bool> IsAlive => isAlive;
-    public ActiveData<bool> IsShot = new ActiveData<bool>();
-    public ActiveData<float> Damage = new ActiveData<float>();
-    public ActiveData<float> AttackSpeed = new ActiveData<float>();
-    public ActiveData<float> Dist = new ActiveData<float>();
+    private ActiveData<bool> isShot = new ActiveData<bool>();
+    public ActiveData<bool> IsShot { get => isShot; set { isShot = value; } }
+    public bool IsSelected { get; set; }
+    private ActiveData<float> damage = new ActiveData<float>();
+    public ActiveData<float> Damage { get => damage; set { damage = value; } }
+    private ActiveData<float> attackSpeed = new ActiveData<float>();
+    public ActiveData<float> AttackSpeed { get => attackSpeed; set { attackSpeed = value; } }
+    private ActiveData<float> dist = new ActiveData<float>();
+    public ActiveData<float> Dist { get => dist; set { dist = value; } }
     public UnitType Type { get; set; }
     public Vector2 Pos { get { return transform.position; } }
     public Quaternion Rot { get { return transform.rotation; } }
@@ -34,6 +38,7 @@ public class BaseUnit : MonoBehaviour, IUnit
         {typeof(MiningBehData),new MiningBeh()},
         {typeof(MoveAndAttackBehData),new MoveAndAttackBeh()},
         {typeof(AddGoldBehData),new AddGoldBeh()},
+        {typeof(SpawnEnemiesBehData),new SpawnEnemiesBeh()},
         {typeof(MoveBehData),new MoveBeh()},
         {typeof(NoneBehData),new NoneBeh()}
     };
@@ -80,7 +85,7 @@ public class BaseUnit : MonoBehaviour, IUnit
         health.Value -= damage ;
     }
     public virtual void DestroyUnit()
-    {
+    {        
         SetBeh(new NoneBehData());
         health.UpdateEvent -= Health_UpdateEvent;
         GameObject.Destroy(healthBarUI.gameObject);

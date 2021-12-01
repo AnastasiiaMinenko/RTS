@@ -20,11 +20,10 @@ public class SceneButtons : MonoBehaviour
         if(EventSystem.current!=null)
         {
             //Debug.Log(EventSystem.current.currentSelectedGameObject);
-        }    
-        
+        }            
     }
     public void PlayGame()
-    {
+    {       
         SceneManager.LoadScene("GameScene");
     }
     public void QuitGame()

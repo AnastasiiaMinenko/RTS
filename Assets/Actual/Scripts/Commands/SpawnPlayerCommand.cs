@@ -41,6 +41,13 @@ namespace Commands
 					Rot = new Vector3(0, 0, 0),
 					Player = player
 				});
+				CommandExecutor.Execute(new SpawnUnitData
+				{
+					Type = UnitType.GUARDIAN,
+					Pos = new Vector2(28.283f, 0.556f),
+					Rot = new Vector3(0, 0, 0),
+					Player = player
+				});
 			}
             else
             {

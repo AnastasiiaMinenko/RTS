@@ -8,8 +8,13 @@ public interface IUnit
 {
     public float Health { get; }
     public ActiveData<bool> IsAlive { get; }
+    public ActiveData<bool> IsShot { get; }
+    public bool IsSelected { get; set; }
     public UnitType Type { get; set; }
-    public float MoveSpeed { get; }
+    public float MoveSpeed { get; set; }
+    public ActiveData<float> AttackSpeed { get; set; }
+    public ActiveData<float> Damage { get; set; }
+    public ActiveData<float> Dist { get; set; }
     public void SetAnimBool(string name, bool isVal);
     public Vector2 Pos { get; }
     public Quaternion Rot { get; }

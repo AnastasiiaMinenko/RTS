@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager 
 {
+    private bool isEnd;
     public LevelManager()
     {
         GameManager.Data.Players.AddEvent += Players_AddEvent;
@@ -38,15 +39,22 @@ public class LevelManager
                 winPlayerIDs.Add(player.ID);
             }
         }
-
-        if(winPlayerIDs.Contains(GameManager.Data.CurrentPlayer.ID))
+        OpenLevel(winPlayerIDs.Contains(GameManager.Data.CurrentPlayer.ID) ? "WinScene" : "LoseScene");        
+    }
+    private void OpenLevel(string name)
+    {
+        if(!isEnd)
         {
-            SceneManager.LoadScene("WinScene");
+            isEnd = true;
+            while (GameManager.Data.Players.Count > 0)
+            {
+                GameManager.Data.Players[0].DeInit();
+                GameManager.Data.Players.Remove(GameManager.Data.Players[0]);
+            }
+            SceneManager.LoadScene(name);
         }
-        else
-        {
-            Debug.Log(123);
-            SceneManager.LoadScene("LoseScene");
-        }
+               
+        
+        
     }
 }

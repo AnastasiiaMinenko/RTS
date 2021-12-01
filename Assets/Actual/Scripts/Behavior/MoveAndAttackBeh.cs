@@ -74,15 +74,18 @@ public class MoveAndAttackBeh : IBeh
                     if (isShot.Value)
                     {
                         DoShot(unitTransform, enemy.Transform);                        
-                    }
-                    
+                    }                    
                     /*if (unit.Type == UnitType.WARRIOR)
                     {
+                        Debug.Log("123");
                         enemy.SetAnimBool("isFight", true);
+                        Debug.Log("1123");
                     }
                     else if (unit.Type == UnitType.ARCHER)
                     {
+                        Debug.Log("456");
                         enemy.SetAnimBool("isAttack", true);
+                        Debug.Log("4456");
                     }*/
                     yield return new WaitForSeconds(attackSpeed.Value / 2);
 
@@ -127,13 +130,16 @@ public class MoveAndAttackBeh : IBeh
     public static ObjectPool ObjectPool = new ObjectPool();
     
     private static void DoShot(Transform unitTransform, Transform enemyTransform)
-    {
-        
+    {        
         var gameObject = ObjectPool.GetObject("Prefabs/Shot");
         gameObject.transform.position = unitTransform.position;
+       
+        var dir = enemyTransform.position - unitTransform.position;
+        var euler = Quaternion.LookRotation(dir).eulerAngles;
+        var rot = Quaternion.Euler(0, 0, 360 - euler.x);        
+        gameObject.transform.rotation = rot;
         
-        GameManager.Data.CoroutineRunner.StartCor(CoroutineRunnerExt.Move(gameObject.transform, unitTransform.position, enemyTransform.position, .5f, gameObject, DestroyObj));
-              
+        GameManager.Data.CoroutineRunner.StartCor(CoroutineRunnerExt.Move(gameObject.transform, unitTransform.position, enemyTransform.position, .5f, gameObject, DestroyObj));                
     }
     private static void DestroyObj(object gameObject)
     {
@@ -168,7 +174,7 @@ public class ObjectPool
 
         for (var i = 0; i < items.Count; i++)
         {
-            if (!items[i].activeSelf)
+            if (items[i]!=null && !items[i].activeSelf)
             {
                 result = items[i];
                 break;

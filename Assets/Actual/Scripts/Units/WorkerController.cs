@@ -1,10 +1,16 @@
+using Commands;
+using Scripts.Core.Data;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 public class WorkerController : BaseUnit
 {
     private CastleController _castleController;
     private MineController mineController;
+    public IntEvent CountWorker = new IntEvent();
 
     public void SetCastle(CastleController castleController)
-    {
+    {       
         if (_castleController)
         {
             _castleController.IsAlive.UpdateEvent -= IsAlive_UpdateEvent;
@@ -16,6 +22,7 @@ public class WorkerController : BaseUnit
             _castleController.IsAlive.UpdateEvent += IsAlive_UpdateEvent;
         }
         TryMineStart();
+        
     }
     private void IsAlive_UpdateEvent(bool obj)
     {
@@ -37,6 +44,7 @@ public class WorkerController : BaseUnit
             SetBeh(new NoneBehData());
         }
     }
+    
     public override void DestroyUnit()
     {
         base.DestroyUnit();

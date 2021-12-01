@@ -28,16 +28,34 @@ namespace Commands
 			Do();
 		}
 		private void Do()
+        {
+			var selectedUnits = data.Player.SelectedUnit.Value;
+			var targetUnit = data.Unit;
+						
+			/*for (var i = 0; i < selectedUnits.Count; i++)
+			{
+				DoUnitAction(selectedUnits[i], targetUnit);
+			}*/
+			selectedUnits.ForEach(item => DoUnitAction(item, targetUnit));
+		}
+		private void DoUnitAction(IUnit selectedUnit, IUnit targetUnit)
 		{
-			var selectedUnit = data.Player.SelectedUnit.Value;
 			if (selectedUnit != null && selectedUnit.Owner == data.Player)
 			{
-				if (data.Unit != null)
+				if (targetUnit != null)
 				{
-					if (selectedUnit is WorkerController && data.Unit is MineController)
+					if (selectedUnit is WorkerController && targetUnit is MineController)
 					{
-						((WorkerController)selectedUnit).SetMine((MineController)data.Unit);
+						((WorkerController)selectedUnit).SetMine((MineController)targetUnit);
 					}
+					if(selectedUnit is WarriorController)
+                    {						
+						var isEnemy = !data.Player.Units.Contains(targetUnit);
+						if(isEnemy)
+                        {
+							selectedUnit.SetBeh(new MoveAndAttackBehData { Unit = selectedUnit, Enemy = targetUnit, AttackSpeed = selectedUnit.AttackSpeed, Damage = selectedUnit.Damage, Dist = selectedUnit.Dist, IsShot = selectedUnit.IsShot});
+                        }
+                    }
 				}
 				else
 				{
@@ -48,7 +66,7 @@ namespace Commands
 					var dir = ((Vector2)selectedUnit.Transform.position - data.Pos).magnitude;
 					if (selectedUnit is WorkerController || selectedUnit is WarriorController)
 					{						
-						selectedUnit.SetBeh(new MoveBehData { transform = selectedUnit.Transform, startPos = selectedUnit.Transform.position, endPos = (Vector3)data.Pos, duration = dir });						
+						selectedUnit.SetBeh(new MoveBehData { transform = selectedUnit.Transform, startPos = selectedUnit.Transform.position, endPos = (Vector3)data.Pos, duration = dir/selectedUnit.MoveSpeed });						
 					}
 				}
 			}

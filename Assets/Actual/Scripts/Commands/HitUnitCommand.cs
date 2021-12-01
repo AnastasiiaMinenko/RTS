@@ -30,7 +30,7 @@ namespace Commands
 		private void Do()
 		{
 			data.Enemy.ReceiveDamage(data.Damage);
-			if (data.Enemy.Health < 0)
+			if (data.Enemy.Health < 0 && data.Enemy.IsAlive.Value)
 			{
 				CommandExecutor.Execute(new DestroyUnitData
 				{

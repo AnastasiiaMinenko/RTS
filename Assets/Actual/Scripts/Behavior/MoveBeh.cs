@@ -31,5 +31,5 @@ public struct MoveBehData : IBehData
     public Transform transform;
     public Vector3 startPos;
     public Vector3 endPos;
-    public float duration;
+    public float duration;   
 }

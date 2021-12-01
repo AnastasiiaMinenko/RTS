@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Commands
 {
 	public struct SpawnUnitData : ICommandData
@@ -16,7 +15,6 @@ namespace Commands
 		public PortalController PortalController;
 		public HealthBarUI valueHealth;
 	}
-
 	public class SpawnUnitCommand : ICommand
 	{
 		private SpawnUnitData data;
@@ -40,16 +38,18 @@ namespace Commands
 				UnitType.WORKER, new UnitBuildData { Path = "Units/Worker", OffsetY = 60, Health = 20}
 			},
 			{
-				UnitType.WARRIOR, new UnitBuildData { Path = "Units/Warrior", OffsetY = 60, Health = 10}
+				UnitType.WARRIOR, new UnitBuildData { Path = "Units/Warrior", OffsetY = 60, Health = 100}
 			},
 			{
 				UnitType.ARCHER, new UnitBuildData { Path = "Units/Archer", OffsetY = 60, Health = 10}
 			},
 			{
 				UnitType.ENEMY, new UnitBuildData { Path =  "Units/Enemy", OffsetY = 60, Health = 10}
+			},
+			{
+				UnitType.GUARDIAN, new UnitBuildData { Path =  "Units/Guardian", OffsetY = 60, Health = 200}
 			}
 		};
-
 		public void Execute(ICommandData data, Action onSuccess, Action<string> onFail)
 		{
 			this.data = (SpawnUnitData)data;
@@ -58,7 +58,6 @@ namespace Commands
 
 			Do();
 		}
-
 		private void Do()
 		{			
 			var gameObject = MoveAndAttackBeh.ObjectPool.GetObject("Prefabs/" + UnitPath[data.Type].Path).GetComponent<BaseUnit>();
@@ -69,8 +68,7 @@ namespace Commands
 			gameObject.Type = data.Type;
 			gameObject.Init();
 			data.Player.Units.Add(gameObject);
-
-
+			
 			var prefabHP = Resources.Load<HealthBarUI>("Prefabs/UI/HealthBar");
 			var healthBarObject = GameObject.Instantiate(prefabHP, GameManager.Data.UIController.UI);
 			var followController = healthBarObject.gameObject.AddComponent<UIFollowController>();
@@ -81,11 +79,14 @@ namespace Commands
 			{
 				var castle = (CastleController)gameObject;
 				data.Player.AddCastle(castle);
-
 			}
 			else if (data.Type == UnitType.PORTAL)
-			{
+			{				
 				var portal = (PortalController)gameObject;
+			}
+			else if (data.Type == UnitType.GUARDIAN)
+			{
+				var guard = (GuardianController)gameObject;
 			}
 			else if (data.Type == UnitType.WORKER)
 			{
@@ -96,19 +97,19 @@ namespace Commands
 				if (mine != null)
 				{
 					worker.SetMine((MineController)mine);
-				}
+				}				
 			}
 			else if (data.Type == UnitType.WARRIOR || data.Type == UnitType.ENEMY || data.Type == UnitType.ARCHER)
 			{
 				var war = (WarriorController)gameObject;
 				war.Damage.Value = data.Type == UnitType.WARRIOR ? 3 : 3;
-				war.AttackSpeed.Value = data.Type == UnitType.WARRIOR ? 1 : .1f;
+				war.AttackSpeed.Value = data.Type == UnitType.WARRIOR ? 1 : 1f;
 				war.Dist.Value = data.Type == UnitType.WARRIOR || data.Type == UnitType.ENEMY ? 1 : 7;
 				war.IsShot.Value = data.Type == UnitType.ARCHER;
 			}
+			gameObject.MoveSpeed = data.Type == UnitType.WARRIOR ? 5 : 2;
 		}
 	}
-
 	public enum UnitType
 	{
 		CASTLE,
@@ -118,9 +119,9 @@ namespace Commands
 		WORKER,
 		WARRIOR,
 		ARCHER,
-		ENEMY
+		ENEMY,
+		GUARDIAN
 	}
-
 	public struct UnitBuildData
 	{
 		public string Path;

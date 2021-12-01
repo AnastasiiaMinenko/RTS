@@ -16,7 +16,6 @@ namespace Commands
 		private Action onSuccess;
 		private Action<string> onFail;
 
-
 		public void Execute(ICommandData data, Action onSuccess, Action<string> onFail)
 		{
 			this.data = (DestroyUnitData)data;
@@ -32,8 +31,7 @@ namespace Commands
 			data.Unit.DestroyUnit();
 			data.Unit.Owner.Units.Remove(data.Unit);	
 
-			data.Unit.Transform.gameObject.SetActive(false);
-			
+			data.Unit.Transform.gameObject.SetActive(false);			
 		}
 	}
 }

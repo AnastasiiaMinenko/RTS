@@ -86,7 +86,7 @@ public class SelectionUI : MonoBehaviour
         //var controller = GameObject.Instantiate(prefabWorker, pos, Quaternion.Euler(0, 180, 0), gameField);
         //controller.Init();
 
-        SpawnUnit(UnitType.WORKER, pos, Quaternion.identity.eulerAngles, player, 5);
+        SpawnUnit(UnitType.WORKER, pos, Quaternion.identity.eulerAngles, player, 5);        
     }
     private void onWarriorClick()
     {
@@ -101,8 +101,8 @@ public class SelectionUI : MonoBehaviour
 
         var pos = (Vector2)barrackTransform.Pos + spawnDirWarrior * 4;
 
-        SpawnUnit(UnitType.WARRIOR, pos * 0.9f, Quaternion.identity.eulerAngles, player, 5);
-    }
+        SpawnUnit(UnitType.WARRIOR, pos * 0.9f, Quaternion.identity.eulerAngles, player, 5);        
+    } 
     private void onArcherClick()
     {
         var barrackTransform = player.GetUnitByType(UnitType.BARRACK);
